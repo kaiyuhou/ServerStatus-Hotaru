@@ -1,4 +1,30 @@
-# ServerStatus-Hotaru
+# ServerStatus-Hotaru 
+Kaiyu's Version
+
+原始版本 Fork 自 [CokeMine/ServerStatus-Hotaru](https://github.com/CokeMine/ServerStatus-Hotaru)
+
+## 添加的修改
+
+- 移除 status.sh 中 iptables 相关设置
+
+## 使用
+服务端
+```bash
+wget https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/status.sh
+bash status.sh s
+```
+
+客户端：
+
+```
+wget https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/status.sh
+bash status.sh c
+```
+
+
+------------------------------------------------------------
+## 一下为历史 Readme
+
 云探针、多服务器探针、云监控、多服务器云监控
 
 基于ServerStatus-Toyo最新版本稍作修改，不太会脚本什么的，前端也垃圾。见谅
@@ -22,7 +48,7 @@ Test v0.022：头图来源：Pixiv：72725286
 服务端：
 
 ```bash
-wget https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/status.sh
+wget https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/status.sh
 bash status.sh s
 ```
 
@@ -57,7 +83,7 @@ bash status.sh c
 
 ```
 apt install wget unzip curl make build-essential
-wget https://github.com/CokeMine/ServerStatus-Hotaru/archive/master.zip
+wget https://github.com/kaiyuhou/ServerStatus-Hotaru/archive/master.zip
 unzip master.zip
 cd /root/ServerStatus-Hotaru-master/server
 make #手动编译生成二进制文件
@@ -84,7 +110,7 @@ Linux：
 ```
 apt install python3 python3-pip wget
 pip3 install psutil
-wget https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/clients/status-psutil.py
+wget https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/clients/status-psutil.py
 vim status-psutil.py #修改客户端配置文件
 python3 status-psutil.py
 ```
