@@ -1,23 +1,21 @@
 ﻿# -*- coding: utf-8 -*-
 # Support Python Version 2.7 to 3.7
-# Update by: https://github.com/CokeMine/ServerStatus-Hotaru
+# Update by: https://github.com/kaiyuhou/ServerStatus-Hotaru
+# Source from: https://github.com/CokeMine/ServerStatus-Hotaru
 
 SERVER = "127.0.0.1"
 PORT = PORT
 USER = "USER"
 PASSWORD = "USER_PASSWORD"
-INTERVAL = 1  # 更新间隔，单位：秒
+INTERVAL = 5  # message interval (seconds)
 
 import socket
 import time
-import string
-import math
 import re
 import os
 import json
 import subprocess
 import collections
-import platform
 
 
 def get_uptime():
@@ -25,17 +23,16 @@ def get_uptime():
     uptime = f.readline()
     f.close()
     uptime = uptime.split('.', 2)
-    time = int(uptime[0])
-    return int(time)
+    return int(uptime[0])
 
 
 def get_memory():
     re_parser = re.compile(r'^(?P<key>\S*):\s*(?P<value>\d*)\s*kB')
-    result = dict()
+    result = {}
     for line in open('/proc/meminfo'):
         match = re_parser.match(line)
         if not match:
-            continue;
+            continue
         key, value = match.groups(['key', 'value'])
         result[key] = int(value)
 
@@ -101,7 +98,7 @@ class Traffic:
         f = open('/proc/net/dev', 'r')
         net_dev = f.readlines()
         f.close()
-        avgrx = 0;
+        avgrx = 0
         avgtx = 0
 
         for dev in net_dev[2:]:
@@ -114,7 +111,7 @@ class Traffic:
 
         self.rx.append(avgrx)
         self.tx.append(avgtx)
-        avgrx = 0;
+        avgrx = 0
         avgtx = 0
 
         l = len(self.rx)
@@ -146,12 +143,12 @@ def liuliang():
 
 
 def get_network(ip_version):
-    if (ip_version == 4):
-        HOST = "ipv4.google.com"
-    elif (ip_version == 6):
-        HOST = "ipv6.google.com"
+    if ip_version == 4:
+        host = "ipv4.google.com"
+    elif ip_version == 6:
+        host = "ipv6.google.com"
     try:
-        s = socket.create_connection((HOST, 80), 2)
+        socket.create_connection((host, 80), 2)
         return True
     except:
         pass
