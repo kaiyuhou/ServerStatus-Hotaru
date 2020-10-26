@@ -5,25 +5,104 @@ Kaiyu's Version
 
 ## 添加的修改
 
-- 移除 status.sh 中 iptables 相关设置
+- 移除 `status.sh` 中 `iptables` 相关设置，Ubuntu 中应该使用 `ufw` 进行配置
+- 修改文件下载连接指向 `kaiyuhou/ServerStatus-Hotaru`
+- 增加使用说明和**目录结构**
+
 
 ## 使用
-服务端
+
+- 由于需要添加系统服务，应该使用 `root` 账号
+
+- 服务端
 ```bash
 wget https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/status.sh
 bash status.sh s
+service status-server start # 这句话必须要手动执行
+service caddy start # 可能需要重启 caddy 服务
 ```
 
-客户端：
+- 客户端：
 
 ```
 wget https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/status.sh
 bash status.sh c
 ```
 
+- 目录结构
+
+```
+~ - status.sh  # 提供快捷操作指令，注意区分选择服务端和客户端
+---
+/usr/local/ServerStatus/
+    |- client
+        |- status-client.py # 客户端本身只是一个 python socket 脚本，顶部为配置信息
+    | - server
+        |- config.conf # 记录接收客户端信息的端口号
+        |- config.json # 配置客户端信息
+    |- web # 网页相关
+---
+/etc/init.d/
+    |- status-server # 服务端的服务
+    |- status-client # 客户端服务
+```
+
+- 服务端配置文件示例
+```json
+{"servers":
+ [
+  {
+   "username": "racknerd-vps-1",
+   "password": "somepassword",
+   "name": "racknerd-vps-1",
+   "type": "2C-2G-50G",
+   "host": "None",
+   "location": "Chicago, US",
+   "disabled": false ,
+   "region": "US"
+  },
+  {
+   "username": "cloudcone-compute-1",
+   "password": "somepassword",
+   "name": "cloudcone-compute-1",
+   "type": "2C-2G-40G",
+   "host": "None",
+   "location": "Log Angles, US",
+   "disabled": false,
+   "region": "US"
+  }
+ ]
+}
+```
+
+- 修改对应配置文件后需要重启**服务端/客户端**
+```
+$server: sudo service status-server restart
+$client: sudo service status-client restart
+```
+
+## 尝试 docker container 部署和遇到的问题
+
+执行的命令
+```shell script
+docker run -d -p 8080:80 -p 35601:35601 \
+  --name server-status \
+  -v /usr/local/ServerStatus/:/usr/local/ServerStatus/ \
+  --restart always ubuntu:18.04 \
+  tail -f /dev/null # 新建一个 Ubuntu container
+docker exec -it server-status /bin/bash # 进入 container
+apt update
+apt install python3 wget unzip iptables
+wget https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/status.sh
+bash status.sh s
+```
+
+遇到的的问题
+-   修改配置文件后，执行`servie status-server restart` 并不会生效。应该 sergate 服务并不能被正确的重启。需要重启 container 才能让配置文件生效。
+
 
 ------------------------------------------------------------
-## 一下为历史 Readme
+# 以下为历史 Readme, 由 CokeMine 提供
 
 云探针、多服务器探针、云监控、多服务器云监控
 
