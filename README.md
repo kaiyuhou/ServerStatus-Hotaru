@@ -5,9 +5,14 @@ Kaiyu's Version
 
 ## 添加的修改
 
-- 移除 `status.sh` 中 `iptables` 相关设置，Ubuntu 中应该使用 `ufw` 进行配置
 - 修改文件下载连接指向 `kaiyuhou/ServerStatus-Hotaru`
-- 增加使用说明和**目录结构**
+- Readme 增加使用说明和**目录结构**
+- `status.sh` 
+    - 移除 `iptables` 相关设置，Ubuntu 中应该使用 `ufw` 进行配置
+- client
+    - 设置默认消息间隔为 5 秒
+    - 修改一些语法错误
+    - TODO: 添加新功能
 
 
 ## 使用
@@ -98,7 +103,7 @@ bash status.sh s
 ```
 
 遇到的的问题
--   修改配置文件后，执行`servie status-server restart` 并不会生效。应该 sergate 服务并不能被正确的重启。需要重启 container 才能让配置文件生效。
+-   修改配置文件后，执行`servie status-server restart` 并不会生效。观察发现 sergate 服务并不能被正确的重启。需要重启 container 才能让配置文件生效。
 
 
 ------------------------------------------------------------

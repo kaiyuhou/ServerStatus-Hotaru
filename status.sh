@@ -5,8 +5,9 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: ServerStatus client + server
-#	Version: Test v0.1.1
-#	Author: Toyo,Modified by APTX
+#	Version: Test v0.1.2
+#	Source: Toyo, Modified by APTX
+# This version is updated by kaiyu
 #=================================================
 
 sh_ver="0.1.1"
@@ -69,7 +70,7 @@ check_pid_client() {
 }
 Download_Server_Status_server() {
   cd "/tmp" || exit
-  wget -N --no-check-certificate "https://github.com/CokeMine/ServerStatus-Hotaru/archive/master.zip"
+  wget -N --no-check-certificate "https://github.com/kaiyuhou/ServerStatus-Hotaru/archive/master.zip"
   [[ ! -e "master.zip" ]] && echo -e "${Error} ServerStatus 服务端下载失败 !" && exit 1
   unzip master.zip
   rm -rf master.zip
@@ -104,7 +105,7 @@ Download_Server_Status_server() {
 }
 Download_Server_Status_client() {
   cd "/tmp" || mkdir "/tmp"
-  wget -N --no-check-certificate "https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/clients/status-client.py"
+  wget -N --no-check-certificate "https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/clients/status-client.py"
   [[ ! -e "status-client.py" ]] && echo -e "${Error} ServerStatus 客户端下载失败 !" && exit 1
   cd "${file_1}" || exit
   [[ ! -e "${file}" ]] && mkdir "${file}"
@@ -131,14 +132,14 @@ Download_Server_Status_client() {
 }
 Service_Server_Status_server() {
   if [[ ${release} == "centos" ]]; then
-    if ! wget --no-check-certificate "https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/service/server_status_server_centos" -O /etc/init.d/status-server; then
+    if ! wget --no-check-certificate "https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/service/server_status_server_centos" -O /etc/init.d/status-server; then
       echo -e "${Error} ServerStatus 服务端服务管理脚本下载失败 !" && exit 1
     fi
     chmod +x /etc/init.d/status-server
     chkconfig --add status-server
     chkconfig status-server on
   else
-    if ! wget --no-check-certificate "https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/service/server_status_server_debian" -O /etc/init.d/status-server; then
+    if ! wget --no-check-certificate "https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/service/server_status_server_debian" -O /etc/init.d/status-server; then
       echo -e "${Error} ServerStatus 服务端服务管理脚本下载失败 !" && exit 1
     fi
     chmod +x /etc/init.d/status-server
@@ -148,14 +149,14 @@ Service_Server_Status_server() {
 }
 Service_Server_Status_client() {
   if [[ ${release} == "centos" ]]; then
-    if ! wget --no-check-certificate "https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/service/server_status_client_centos" -O /etc/init.d/status-client; then
+    if ! wget --no-check-certificate "https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/service/server_status_client_centos" -O /etc/init.d/status-client; then
       echo -e "${Error} ServerStatus 客户端服务管理脚本下载失败 !" && exit 1
     fi
     chmod +x /etc/init.d/status-client
     chkconfig --add status-client
     chkconfig status-client on
   else
-    if ! wget --no-check-certificate "https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/service/server_status_client_debian" -O /etc/init.d/status-client; then
+    if ! wget --no-check-certificate "https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/service/server_status_client_debian" -O /etc/init.d/status-client; then
       echo -e "${Error} ServerStatus 客户端服务管理脚本下载失败 !" && exit 1
     fi
     chmod +x /etc/init.d/status-client
@@ -438,10 +439,10 @@ Set_ServerStatus_server() {
     Modify_ServerStatus_server_disabled
   elif [[ ${server_num} == "11" ]]; then
     Read_config_server
-    Del_iptables "${server_port}"
+#    Del_iptables "${server_port}"
     Set_server_port
     Write_server_config_conf
-    Add_iptables "${server_port_s}"
+#    Add_iptables "${server_port_s}"
   else
     echo -e "${Error} 请输入正确的数字[1-11]" && exit 1
   fi
@@ -664,9 +665,9 @@ Set_ServerStatus_client() {
   check_installed_client_status
   Set_config_client
   Read_config_client
-  Del_iptables_OUT "${client_port}"
+#  Del_iptables_OUT "${client_port}"
   Modify_config_client
-  Add_iptables_OUT "${server_port_s}"
+#  Add_iptables_OUT "${server_port_s}"
   Restart_ServerStatus_client
 }
 Install_vnStat() {
@@ -797,7 +798,7 @@ Install_caddy() {
     Set_server "server"
     Set_server_http_port
     if [[ ! -e "/usr/local/caddy/caddy" ]]; then
-      wget -N --no-check-certificate https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/caddy/caddy_install.sh
+      wget -N --no-check-certificate https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/caddy/caddy_install.sh
       chmod +x caddy_install.sh
       bash caddy_install.sh install
       rm -rf caddy_install.sh
@@ -843,14 +844,15 @@ Install_ServerStatus_server() {
   echo -e "${Info} 开始写入 配置文件..."
   Write_server_config
   Write_server_config_conf
-  echo -e "${Info} 开始设置 iptables防火墙..."
-  Set_iptables
-  echo -e "${Info} 开始添加 iptables防火墙规则..."
-  Add_iptables "${server_port_s}"
-  [[ -n "${server_http_port_s}" ]] && Add_iptables "${server_http_port_s}"
-  echo -e "${Info} 开始保存 iptables防火墙规则..."
-  Save_iptables
+#  echo -e "${Info} 开始设置 iptables防火墙..."
+#  Set_iptables
+#  echo -e "${Info} 开始添加 iptables防火墙规则..."
+#  Add_iptables "${server_port_s}"
+#  [[ -n "${server_http_port_s}" ]] && Add_iptables "${server_http_port_s}"
+#  echo -e "${Info} 开始保存 iptables防火墙规则..."
+#  Save_iptables
   echo -e "${Info} 所有步骤 安装完毕，开始启动..."
+  echo -e "如安装防火墙，请手动启用对应端口"
   Start_ServerStatus_server
 }
 Install_ServerStatus_client() {
@@ -878,13 +880,14 @@ Install_ServerStatus_client() {
   echo -e "${Info} 开始写入 配置..."
   Read_config_client
   Modify_config_client
-  echo -e "${Info} 开始设置 iptables防火墙..."
-  Set_iptables
-  echo -e "${Info} 开始添加 iptables防火墙规则..."
-  Add_iptables_OUT "${server_port_s}"
-  echo -e "${Info} 开始保存 iptables防火墙规则..."
-  Save_iptables
+#  echo -e "${Info} 开始设置 iptables防火墙..."
+#  Set_iptables
+#  echo -e "${Info} 开始添加 iptables防火墙规则..."
+#  Add_iptables_OUT "${server_port_s}"
+#  echo -e "${Info} 开始保存 iptables防火墙规则..."
+#  Save_iptables
   echo -e "${Info} 所有步骤 安装完毕，开始启动..."
+  echo -e "如开启防火墙，请手动配置防火墙 或者 iptables 规则"
   Start_ServerStatus_client
 }
 Update_ServerStatus_server() {
@@ -949,8 +952,8 @@ Uninstall_ServerStatus_server() {
     check_pid_server
     [[ -n $PID ]] && kill -9 "${PID}"
     Read_config_server
-    Del_iptables "${server_port}"
-    Save_iptables
+#    Del_iptables "${server_port}"
+#    Save_iptables
     if [[ -e "${client_file}/status-client.py" ]]; then
       rm -rf "${server_file}"
       rm -rf "${web_file}"
@@ -960,7 +963,7 @@ Uninstall_ServerStatus_server() {
     rm -rf "/etc/init.d/status-server"
     if [[ -e "/etc/init.d/caddy" ]]; then
       /etc/init.d/caddy stop
-      wget -N --no-check-certificate https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/caddy/caddy_install.sh
+      wget -N --no-check-certificate https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/caddy/caddy_install.sh
       chmod +x caddy_install.sh
       bash caddy_install.sh uninstall
       rm -rf caddy_install.sh
@@ -1003,8 +1006,8 @@ Uninstall_ServerStatus_client() {
     check_pid_client
     [[ -n $PID ]] && kill -9 "${PID}"
     Read_config_client
-    Del_iptables_OUT "${client_port}"
-    Save_iptables
+#    Del_iptables_OUT "${client_port}"
+#    Save_iptables
     if [[ -e "${server_file}/sergate" ]]; then
       rm -rf "${client_file}"
     else
@@ -1019,6 +1022,7 @@ Uninstall_ServerStatus_client() {
     echo && echo "ServerStatus 卸载完成 !" && echo
   else
     echo && echo "卸载已取消..." && echo
+  echo "请手动关闭对应外网端口！"
   fi
 }
 View_ServerStatus_client() {
@@ -1082,7 +1086,7 @@ Set_iptables() {
   fi
 }
 Update_Shell() {
-  sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/status.sh" | grep 'sh_ver="' | awk -F "=" '{print $NF}' | sed 's/\"//g' | head -1)
+  sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/status.sh" | grep 'sh_ver="' | awk -F "=" '{print $NF}' | sed 's/\"//g' | head -1)
   [[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
   if [[ -e "/etc/init.d/status-client" ]]; then
     rm -rf /etc/init.d/status-client
@@ -1092,7 +1096,7 @@ Update_Shell() {
     rm -rf /etc/init.d/status-server
     Service_Server_Status_server
   fi
-  wget -N --no-check-certificate "https://raw.githubusercontent.com/CokeMine/ServerStatus-Hotaru/master/status.sh" && chmod +x status.sh
+  wget -N --no-check-certificate "https://raw.githubusercontent.com/kaiyuhou/ServerStatus-Hotaru/master/status.sh" && chmod +x status.sh
   echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 menu_client() {
