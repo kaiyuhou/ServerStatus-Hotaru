@@ -148,7 +148,8 @@ def get_network(ip_version):
     elif ip_version == 6:
         host = "ipv6.google.com"
     try:
-        socket.create_connection((host, 80), 2)
+        s = socket.create_connection((host, 80), 2)
+        s.close()
         return True
     except:
         pass
@@ -179,9 +180,9 @@ if __name__ == '__main__':
 
             timer = 0
             check_ip = 0
-            if data.find("IPv4") > -1:
+            if data.find("IPv4") > -1:  # Server: "You are connecting via: IPv4", So check IPv6
                 check_ip = 6
-            elif data.find("IPv6") > -1:
+            elif data.find("IPv6") > -1:  # Server: "You are connecting via: IPv6"，So check IPv4
                 check_ip = 4
             else:
                 print(data)
@@ -201,7 +202,7 @@ if __name__ == '__main__':
                 array = {}
                 if not timer:
                     array['online' + str(check_ip)] = get_network(check_ip)
-                    timer = 10
+                    timer = 20
                 else:
                     timer -= 1 * INTERVAL
 
