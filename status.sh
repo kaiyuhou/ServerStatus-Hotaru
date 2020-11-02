@@ -80,20 +80,23 @@ Download_Server_Status_server() {
   [[ ! -e "sergate" ]] && echo -e "${Error} ServerStatus 服务端编译失败 !" && cd "${file_1}" && rm -rf "/tmp/ServerStatus-Hotaru-master" && exit 1
   cd "${file_1}" || exit
   [[ ! -e "${file}" ]] && mkdir "${file}"
+
+  echo -e "复制服务端 sergate"
   if [[ ! -e "${server_file}" ]]; then
     mkdir "${server_file}"
-    mv "/tmp/ServerStatus-Hotaru-master/server/sergate" "${server_file}/sergate"
-    mv "/tmp/ServerStatus-Hotaru-master/web" "${web_file}"
   else
     if [[ -e "${server_file}/sergate" ]]; then
       mv "${server_file}/sergate" "${server_file}/sergate1"
-      mv "/tmp/ServerStatus-Hotaru-master/server/sergate" "${server_file}/sergate"
-      mv "/tmp/ServerStatus-Hotaru-master/web" "${web_file}"
-    else
-      mv "/tmp/ServerStatus-Hotaru-master/server/sergate" "${server_file}/sergate"
-      mv "/tmp/ServerStatus-Hotaru-master/web" "${web_file}"
     fi
   fi
+  mv "/tmp/ServerStatus-Hotaru-master/server/sergate" "${server_file}/sergate"
+
+  echo -e "复制服务端 web 前端"
+  if [[ -e "${web_file}" ]]; then
+    rm -rf "${web_file}"
+  fi
+  mv "/tmp/ServerStatus-Hotaru-master/web" "${web_file}"
+
   if [[ ! -e "${server_file}/sergate" ]]; then
     echo -e "${Error} ServerStatus 服务端移动重命名失败 !"
     [[ -e "${server_file}/sergate1" ]] && mv "${server_file}/sergate1" "${server_file}/sergate"
