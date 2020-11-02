@@ -72,7 +72,7 @@ Download_Server_Status_server() {
   cd "/tmp" || exit
   wget -N --no-check-certificate "https://github.com/kaiyuhou/ServerStatus-Hotaru/archive/master.zip"
   [[ ! -e "master.zip" ]] && echo -e "${Error} ServerStatus 服务端下载失败 !" && exit 1
-  unzip master.zip
+  unzip master.zip -q
   rm -rf master.zip
   [[ ! -e "/tmp/ServerStatus-Hotaru-master" ]] && echo -e "${Error} ServerStatus 服务端解压失败 !" && exit 1
   cd "/tmp/ServerStatus-Hotaru-master/server" || exit
