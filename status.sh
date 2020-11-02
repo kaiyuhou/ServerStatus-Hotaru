@@ -88,6 +88,7 @@ Download_Server_Status_server() {
     if [[ -e "${server_file}/sergate" ]]; then
       mv "${server_file}/sergate" "${server_file}/sergate1"
       mv "/tmp/ServerStatus-Hotaru-master/server/sergate" "${server_file}/sergate"
+      mv "/tmp/ServerStatus-Hotaru-master/web" "${web_file}"
     else
       mv "/tmp/ServerStatus-Hotaru-master/server/sergate" "${server_file}/sergate"
       mv "/tmp/ServerStatus-Hotaru-master/web" "${web_file}"
